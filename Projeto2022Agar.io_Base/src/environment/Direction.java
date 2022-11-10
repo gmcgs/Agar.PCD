@@ -9,4 +9,8 @@ public enum Direction {
 	public Coordinate getVector() {
 		return vector;
 	}
+
+	public static Direction randomDirection(){
+		return Direction.values()[(int) Math.random()*4];
+	}
 }
