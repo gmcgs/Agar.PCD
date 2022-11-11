@@ -1,5 +1,7 @@
 package game;
 
+import environment.Direction;
+
 public class AutomaticPlayer extends Player {
 
     public AutomaticPlayer(int id, Game game, byte strength) {
@@ -10,4 +12,11 @@ public class AutomaticPlayer extends Player {
     public boolean isHumanPlayer() {
         return false;
     }
+
+    @Override
+    public Direction nextDirection() {
+        return null;
+    }
+
+
 }

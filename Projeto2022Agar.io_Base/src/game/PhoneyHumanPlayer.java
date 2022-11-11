@@ -1,5 +1,7 @@
 package game;
 
+import environment.Direction;
+
 /**
  * Class to demonstrate a player being added to the game.
  * @author luismota
@@ -12,5 +14,10 @@ public class PhoneyHumanPlayer extends Player {
 
 	public boolean isHumanPlayer() {
 		return true;
+	}
+
+	@Override
+	public Direction nextDirection() {
+		return null;
 	}
 }
