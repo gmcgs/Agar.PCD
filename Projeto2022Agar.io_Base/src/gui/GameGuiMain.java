@@ -2,6 +2,8 @@ package gui;
 
 import java.util.Observable;
 import java.util.Observer;
+
+import game.AutomaticPlayer;
 import game.Game;
 import game.PhoneyHumanPlayer;
 
@@ -41,9 +43,9 @@ public class GameGuiMain implements Observer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		game.addPlayerToGame(new PhoneyHumanPlayer(1, game, (byte)3));
-		game.addPlayerToGame(new PhoneyHumanPlayer(2, game, (byte)2));
-		game.addPlayerToGame(new PhoneyHumanPlayer(3, game, (byte)1));
+		game.addPlayerToGame(new AutomaticPlayer(1, game, (byte)3));
+		game.addPlayerToGame(new AutomaticPlayer(2, game, (byte)2));
+		game.addPlayerToGame(new AutomaticPlayer(3, game, (byte)1));
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public class AutomaticPlayer extends Player {
 
     @Override
     public Direction nextDirection() {
-        return null;
+        return Direction.randomDirection();
     }
 
 

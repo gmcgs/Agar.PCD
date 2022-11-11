@@ -39,6 +39,7 @@ public class Cell {
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		} finally {
+			this.player = player;
 			lock.unlock();
 		}
 	}
