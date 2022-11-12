@@ -3,13 +3,14 @@ package game;
 
 
 import environment.Cell;
+import environment.Direction;
 
 /**
  * Represents a player.
  * @author luismota
  *
  */
-public abstract class Player  {
+public abstract class Player extends Thread{
 
 
 	protected  Game game;
@@ -68,4 +69,6 @@ public abstract class Player  {
 	public int getIdentification() {
 		return id;
 	}
+
+	public abstract Direction nextDirection();
 }
