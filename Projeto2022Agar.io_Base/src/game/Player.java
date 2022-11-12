@@ -3,6 +3,10 @@ package game;
 
 
 import environment.Cell;
+import environment.Coordinate;
+import environment.Direction;
+
+import javax.swing.*;
 
 /**
  * Represents a player.
@@ -33,7 +37,8 @@ public abstract class Player  {
 	}
 
 	public abstract boolean isHumanPlayer();
-	
+
+	public abstract Direction nextDirection();
 	@Override
 	public String toString() {
 		return "Player [id=" + id + ", currentStrength=" + currentStrength + ", getCurrentCell()=" + getCurrentCell()
@@ -58,6 +63,18 @@ public abstract class Player  {
 			return false;
 		Player other = (Player) obj;
 		return id == other.id;
+	}
+
+	public void moviment(Direction direction){
+		if (direction != null){
+			Cell position = game.getPlayerCell(this);
+			Coordinate newPosition = position.getPosition().translate(direction.getVector());
+			Cell newPos = game.validate(newPosition);
+
+			if (newPos != null){
+
+			}
+		}
 	}
 
 	public byte getCurrentStrength() {

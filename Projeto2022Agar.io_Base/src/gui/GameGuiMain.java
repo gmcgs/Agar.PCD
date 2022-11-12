@@ -33,19 +33,21 @@ public class GameGuiMain implements Observer {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	public void init()  {
+	public void init() {
 		frame.setVisible(true);
 
 		// Demo players, should be deleted
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		game.addPlayerToGame(new AutomaticPlayer(1, game, (byte)3));
-		game.addPlayerToGame(new AutomaticPlayer(2, game, (byte)2));
-		game.addPlayerToGame(new AutomaticPlayer(3, game, (byte)1));
+		for (int i = 5; i >0; i--){
+			game.addPlayerToGame(new AutomaticPlayer(1, game, (byte) 3));
+			game.addPlayerToGame(new AutomaticPlayer(2, game, (byte) 2));
+			game.addPlayerToGame(new AutomaticPlayer(3, game, (byte) 1));
+		}
 	}
 
 	@Override
