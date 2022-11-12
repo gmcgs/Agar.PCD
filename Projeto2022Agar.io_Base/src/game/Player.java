@@ -3,7 +3,6 @@ package game;
 
 
 import environment.Cell;
-import environment.Direction;
 
 /**
  * Represents a player.
@@ -33,9 +32,7 @@ public abstract class Player  {
 	}
 
 	public abstract boolean isHumanPlayer();
-
-	public abstract Direction nextDirection();
-
+	
 	@Override
 	public String toString() {
 		return "Player [id=" + id + ", currentStrength=" + currentStrength + ", getCurrentCell()=" + getCurrentCell()
