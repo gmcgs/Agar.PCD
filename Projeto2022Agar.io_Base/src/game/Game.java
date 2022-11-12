@@ -54,4 +54,12 @@ public class Game extends Observable {
 	public Cell getRandomCell() {
 		return getCell(new Coordinate((int)(Math.random()*Game.DIMX),(int)(Math.random()*Game.DIMY)));
 	}
+
+	public Cell getPlayerCell(Player p){
+		for (Cell[] l : board)
+			for (Cell c : l)
+				if (p.equals(c.getPlayer()))
+					return c;
+		return null;
+	}
 }
