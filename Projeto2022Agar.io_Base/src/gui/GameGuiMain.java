@@ -7,7 +7,7 @@ import java.util.Observer;
 
 import game.AutomaticPlayer;
 import game.Game;
-import game.PhoneyHumanPlayer;
+import game.HumanPlayer;
 
 import javax.swing.JFrame;
 
@@ -28,8 +28,6 @@ public class GameGuiMain implements Observer {
 	private void buildGui() {
 		boardGui = new BoardJComponent(game);
 		frame.add(boardGui);
-
-
 		frame.setSize(800,800);
 		frame.setLocation(0, 150);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,12 +36,12 @@ public class GameGuiMain implements Observer {
 	public void init() throws InterruptedException {
 		frame.setVisible(true);
 		ArrayList<Thread> playerList = new ArrayList<>();
-		for (int i = 0; i < 90; i++) {
+		for (int i = 0; i < 90 ; i++) {
+			if(i == 0){ playerList.add(new HumanPlayer(i, game, getInitialEnergy())); }
 			playerList.add(new AutomaticPlayer(i, game, getInitialEnergy()));
 			playerList.get(i).start();
 			playerList.get(i).join();
 		}
-
 	}
 
 	public byte getInitialEnergy(){

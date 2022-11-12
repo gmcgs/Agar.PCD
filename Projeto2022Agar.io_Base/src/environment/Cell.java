@@ -33,7 +33,7 @@ public class Cell {
 		lock.lock();
 		try{
 			while (isOcupied()){
-				System.out.println(player + "is waiting");
+				System.out.println(player + "is waiting for " + this.player + " to move.");
 				freedom.await();
 			}
 		} catch (InterruptedException e) {
