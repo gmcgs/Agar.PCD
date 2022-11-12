@@ -3,11 +3,7 @@ package game;
 
 
 import environment.Cell;
-<<<<<<< HEAD
 import environment.Direction;
-=======
-import gui.BoardJComponent;
->>>>>>> cd3a071 (getPlayerCell_update)
 
 /**
  * Represents a player.
@@ -63,9 +59,7 @@ public abstract class Player  {
 		if (getClass() != obj.getClass())
 			return false;
 		Player other = (Player) obj;
-		if (id != other.id)
-			return false;
-		return true;
+		return id == other.id;
 	}
 
 	public byte getCurrentStrength() {
