@@ -3,7 +3,11 @@ package game;
 
 
 import environment.Cell;
+<<<<<<< HEAD
 import environment.Direction;
+=======
+import gui.BoardJComponent;
+>>>>>>> cd3a071 (getPlayerCell_update)
 
 /**
  * Represents a player.
@@ -20,9 +24,8 @@ public abstract class Player  {
 	private byte currentStrength;
 	protected byte originalStrength;
 
-	// TODO: get player position from data in game
 	public Cell getCurrentCell() {
-		return null;
+		return game.getPlayerCell(this);
 	}
 
 	public Player(int id, Game game, byte strength) {
