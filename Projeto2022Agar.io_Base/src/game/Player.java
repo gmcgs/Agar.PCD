@@ -20,6 +20,7 @@ public abstract class Player  {
 	protected byte originalStrength;
 
 	public Cell getCurrentCell() {
+		//done
 		return game.getPlayerCell(this);
 	}
 
