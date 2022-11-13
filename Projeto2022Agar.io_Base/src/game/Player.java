@@ -3,14 +3,17 @@ package game;
 
 
 import environment.Cell;
+import environment.Coordinate;
 import environment.Direction;
+
+import javax.swing.*;
 
 /**
  * Represents a player.
  * @author luismota
  *
  */
-public abstract class Player extends Thread{
+public abstract class Player  {
 
 
 	protected  Game game;
@@ -34,7 +37,8 @@ public abstract class Player extends Thread{
 	}
 
 	public abstract boolean isHumanPlayer();
-	
+
+	public abstract Direction nextDirection();
 	@Override
 	public String toString() {
 		return "Player [id=" + id + ", currentStrength=" + currentStrength + ", getCurrentCell()=" + getCurrentCell()
@@ -61,6 +65,18 @@ public abstract class Player extends Thread{
 		return id == other.id;
 	}
 
+	public void moviment(Direction direction){
+		if (direction != null){
+			Cell position = game.getPlayerCell(this);
+			Coordinate newPosition = position.getPosition().translate(direction.getVector());
+			Cell newPos = game.validate(newPosition);
+
+			if (newPos != null){
+
+			}
+		}
+	}
+
 	public byte getCurrentStrength() {
 		return currentStrength;
 	}
@@ -69,6 +85,4 @@ public abstract class Player extends Thread{
 	public int getIdentification() {
 		return id;
 	}
-
-	public abstract Direction nextDirection();
 }

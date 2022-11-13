@@ -4,6 +4,7 @@ package game;
 import java.util.Observable;
 import environment.Cell;
 import environment.Coordinate;
+import environment.Direction;
 
 public class Game extends Observable {
 	//temos de fazer a colocação dos jogadores
@@ -62,4 +63,23 @@ public class Game extends Observable {
 					return c;
 		return null;
 	}
+
+	public void playerMove(Cell p, Cell np){
+		try{
+			np.setPlayer(p.getPlayer());
+		} finally {
+
+		}
+	}
+
+	public Cell validate(Coordinate p){
+		if(validatePos(p))
+			return getCell(p);
+		return null;
+	}
+
+	private boolean validatePos(Coordinate pos){
+		return pos.x >= 0 && pos.x < DIMX && pos.y >= 0 && pos.y < DIMY;
+	}
+
 }
