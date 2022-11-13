@@ -13,7 +13,7 @@ import javax.swing.*;
  * @author luismota
  *
  */
-public abstract class Player  {
+public abstract class Player extends Thread{
 
 
 	protected  Game game;
@@ -72,7 +72,7 @@ public abstract class Player  {
 			Cell newPos = game.validate(newPosition);
 
 			if (newPos != null){
-
+				game.playerMove(position, newPos);
 			}
 		}
 	}

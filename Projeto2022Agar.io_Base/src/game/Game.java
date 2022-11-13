@@ -64,9 +64,14 @@ public class Game extends Observable {
 		return null;
 	}
 
-	public void playerMove(Cell p, Cell np){
+	public void playerMove(Cell pos, Cell newPos){
 		try{
-			np.setPlayer(p.getPlayer());
+			if(!newPos.isOccupied()) {
+				newPos.setPlayer(pos.getPlayer());
+				pos.removePlayer();
+			} else {
+				//implementar conflito
+			}
 		} finally {
 
 		}
