@@ -13,7 +13,7 @@ import javax.swing.*;
  * @author luismota
  *
  */
-public abstract class Player  {
+public abstract class Player extends Thread{
 
 
 	protected  Game game;
@@ -34,6 +34,36 @@ public abstract class Player  {
 		this.game=game;
 		currentStrength=strength;
 		originalStrength=strength;
+	}
+	@Override
+	public void run() {
+		boolean notOnTheGame = true;
+
+		while (notOnTheGame) {
+			try{
+				game.addPlayerToGame(this);
+				notOnTheGame = false;
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+			try{
+				moviment(nextDirection());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+	}
+
+	public void moviment(Direction direction){
+		System.out.println("moviment");
+		if (direction != null){
+			Cell position = game.getPlayerCell(this);
+			Coordinate newPosition = position.getPosition().translate(direction.getVector());
+			Cell newPos = game.validate(newPosition);
+			if (newPos != null){
+				game.playerMove(position, newPos);
+			}
+		}
 	}
 
 	public abstract boolean isHumanPlayer();
@@ -65,17 +95,6 @@ public abstract class Player  {
 		return id == other.id;
 	}
 
-	public void moviment(Direction direction){
-		if (direction != null){
-			Cell position = game.getPlayerCell(this);
-			Coordinate newPosition = position.getPosition().translate(direction.getVector());
-			Cell newPos = game.validate(newPosition);
-
-			if (newPos != null){
-
-			}
-		}
-	}
 
 	public byte getCurrentStrength() {
 		return currentStrength;

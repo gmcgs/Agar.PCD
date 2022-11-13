@@ -52,7 +52,19 @@ public class Cell {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
-	
 
+	public void removePlyer(){
+		lock.lock();
+		this.player = null;
+		freedom.signalAll();
+		lock.unlock();
+	}
+
+	public void getLock(){
+		lock.lock();
+	}
+
+	public void getUnlock(){
+		lock.unlock();
+	}
 }
