@@ -25,14 +25,14 @@ public class Cell {
 		return position;
 	}
 
-	public boolean isOcupied() {
+	public boolean isOccupied() {
 		return player!=null;
 	}
 
 	public void addPlayer(Player player){
 		lock.lock();
 		try{
-			while (isOcupied()){
+			while (isOccupied()){
 				System.out.println(player + "is waiting");
 				freedom.await();
 			}
@@ -53,18 +53,10 @@ public class Cell {
 		this.player = player;
 	}
 
-	public void removePlyer(){
+	public void removePlayer() {
 		lock.lock();
 		this.player = null;
-		freedom.signalAll();
 		lock.unlock();
 	}
 
-	public void getLock(){
-		lock.lock();
-	}
-
-	public void getUnlock(){
-		lock.unlock();
-	}
 }

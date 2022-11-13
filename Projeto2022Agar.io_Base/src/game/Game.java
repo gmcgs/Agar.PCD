@@ -64,26 +64,15 @@ public class Game extends Observable {
 		return null;
 	}
 
-	public void playerMove(Cell p, Cell np){
-		np.getLock();
-		p.getLock();
-
+	public void playerMove(Cell pos, Cell newPos){
 		try{
-			if (np.isOcupied()) {
-				boolean fightable = np.getPlayer().getCurrentStrength() > 0 && np.getPlayer().getCurrentStrength() < 10;
-				System.out.println("ocupado");
-				if (fightable) {
-					//confronto
-				}
-
-			}else{
-				np.setPlayer(p.getPlayer());
-				p.removePlyer();
+			if(!newPos.isOccupied()) {
+				newPos.setPlayer(pos.getPlayer());
+				pos.removePlayer();
+			} else {
+				//implementar conflito
 			}
-			notifyChange();
 		} finally {
-			np.getUnlock();
-			p.getUnlock();
 
 		}
 	}
