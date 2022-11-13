@@ -35,36 +35,6 @@ public abstract class Player extends Thread{
 		currentStrength=strength;
 		originalStrength=strength;
 	}
-	@Override
-	public void run() {
-		boolean notOnTheGame = true;
-
-		while (notOnTheGame) {
-			try{
-				game.addPlayerToGame(this);
-				notOnTheGame = false;
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
-			try{
-				moviment(nextDirection());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-	}
-
-	public void moviment(Direction direction){
-		System.out.println("moviment");
-		if (direction != null){
-			Cell position = game.getPlayerCell(this);
-			Coordinate newPosition = position.getPosition().translate(direction.getVector());
-			Cell newPos = game.validate(newPosition);
-			if (newPos != null){
-				game.playerMove(position, newPos);
-			}
-		}
-	}
 
 	public abstract boolean isHumanPlayer();
 
@@ -95,6 +65,43 @@ public abstract class Player extends Thread{
 		return id == other.id;
 	}
 
+	public void moveTo(Direction direction){
+		switch (this.getCurrentStrength()) {
+			case 0:
+			case 10:
+				break;
+			default:
+				if (direction != null) {
+					Cell position = game.getPlayerCell(this);
+					Coordinate newPosition = position.getPosition().translate(direction.getVector());
+					Cell newPos = game.validate(newPosition);
+
+					if (newPos != null) {
+						game.playerMove(position, newPos);
+					}
+				}
+				break;
+		}
+
+	}
+
+	@Override
+	public void run() {
+		boolean isOnGame = false;
+		while(!isOnGame){
+			isOnGame = true;
+			game.addPlayerToGame(this);
+		}
+		try {
+			sleep(game.INITIAL_WAITING_TIME);
+			while (this.currentStrength != 0 && this.currentStrength != 10) {
+				moveTo(nextDirection());
+				sleep(game.REFRESH_INTERVAL * originalStrength);
+			}
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	public byte getCurrentStrength() {
 		return currentStrength;

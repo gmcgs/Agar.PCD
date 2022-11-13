@@ -18,6 +18,8 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public Direction nextDirection() {
+		//Direction nextDir;
 		return null;
+		//return nextDir;
 	}
 }
