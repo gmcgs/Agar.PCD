@@ -37,15 +37,21 @@ public class GameGuiMain implements Observer {
 	public void init() throws InterruptedException {
 		frame.setVisible(true);
 		ArrayList<Thread> playerList = new ArrayList<>();
+
+		// humans
 		for (int i = 0; i < 90 ; i++) {
-			if(i == 0){ playerList.add(new HumanPlayer(i, game, getInitialEnergy())); }
+			if (i == 0) {
+				playerList.add(new HumanPlayer(i, game, getInitialEnergy()));
+			}
 			playerList.add(new AutomaticPlayer(i, game, getInitialEnergy()));
-			playerList.get(i).start();
-			playerList.get(i).join();
 		}
 
-		for (int i = 0; i < 90 ; i++){
-			game.addPlayerToGame((Player) playerList.get(i));
+		for (Thread player : playerList) {
+			player.start();
+		}
+
+		for (Thread player : playerList) {
+			player.join();
 		}
 	}
 

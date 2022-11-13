@@ -65,15 +65,41 @@ public abstract class Player extends Thread{
 		return id == other.id;
 	}
 
-	public void moviment(Direction direction){
-		if (direction != null){
-			Cell position = game.getPlayerCell(this);
-			Coordinate newPosition = position.getPosition().translate(direction.getVector());
-			Cell newPos = game.validate(newPosition);
+	public void moveTo(Direction direction){
+		switch (this.getCurrentStrength()) {
+			case 0:
+			case 10:
+				break;
+			default:
+				if (direction != null) {
+					Cell position = game.getPlayerCell(this);
+					Coordinate newPosition = position.getPosition().translate(direction.getVector());
+					Cell newPos = game.validate(newPosition);
 
-			if (newPos != null){
-				game.playerMove(position, newPos);
+					if (newPos != null) {
+						game.playerMove(position, newPos);
+					}
+				}
+				break;
+		}
+
+	}
+
+	@Override
+	public void run() {
+		boolean isOnGame = false;
+		while(!isOnGame){
+			isOnGame = true;
+			game.addPlayerToGame(this);
+		}
+		try {
+			sleep(game.INITIAL_WAITING_TIME);
+			while (this.currentStrength != 0 && this.currentStrength != 10) {
+				moveTo(nextDirection());
+				sleep(game.REFRESH_INTERVAL * originalStrength);
 			}
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
