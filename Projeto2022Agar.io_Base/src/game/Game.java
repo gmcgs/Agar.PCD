@@ -34,10 +34,8 @@ public class Game extends Observable {
 	public void addPlayerToGame(Player player) {
 		Cell initialPos=getRandomCell();
 		initialPos.addPlayer(player);
-		
 		// To update GUI
 		notifyChange();
-		
 	}
 
 	public Cell getCell(Coordinate at) {
@@ -73,7 +71,6 @@ public class Game extends Observable {
 				//implementar conflito
 			}
 		} finally {
-
 		}
 	}
 

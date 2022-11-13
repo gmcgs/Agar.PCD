@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -28,8 +29,6 @@ public class GameGuiMain implements Observer {
 	private void buildGui() {
 		boardGui = new BoardJComponent(game);
 		frame.add(boardGui);
-
-
 		frame.setSize(800,800);
 		frame.setLocation(0, 150);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,17 +36,27 @@ public class GameGuiMain implements Observer {
 
 	public void init() throws InterruptedException {
 		frame.setVisible(true);
-		// Demo players, should be deleted
 		ArrayList<Thread> playerList = new ArrayList<>();
-		for (int i = 30; i >0; i--){
-			playerList.add(new AutomaticPlayer(i, game, (byte) 3));
+
+		// humans
+		for (int i = 0; i < 90 ; i++) {
+			if (i == 0) {
+				playerList.add(new HumanPlayer(i, game, getInitialEnergy()));
+			}
+			playerList.add(new AutomaticPlayer(i, game, getInitialEnergy()));
 		}
-		for(Thread p : playerList){
-			p.start();
+
+		for (Thread player : playerList) {
+			player.start();
 		}
-		for (Thread p :playerList){
-			p.join();
+
+		for (Thread player : playerList) {
+			player.join();
 		}
+	}
+
+	public byte getInitialEnergy(){
+		return (byte)(Math.random() * Game.MAX_INITIAL_STRENGTH + 1);
 	}
 
 	@Override

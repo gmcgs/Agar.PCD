@@ -13,7 +13,7 @@ public class Cell {
 	private Player player=null;
 
 	protected Lock lock = new ReentrantLock();
-	protected Condition freedom = lock.newCondition();
+	protected Condition free = lock.newCondition();
 	
 	public Cell(Coordinate position,Game g) {
 		super();
@@ -34,7 +34,7 @@ public class Cell {
 		try{
 			while (isOccupied()){
 				System.out.println(player + "is waiting");
-				freedom.await();
+				free.await();
 			}
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
