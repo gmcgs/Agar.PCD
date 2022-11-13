@@ -8,6 +8,7 @@ import java.util.Observer;
 import game.AutomaticPlayer;
 import game.Game;
 import game.HumanPlayer;
+import game.Player;
 
 import javax.swing.JFrame;
 
@@ -41,6 +42,10 @@ public class GameGuiMain implements Observer {
 			playerList.add(new AutomaticPlayer(i, game, getInitialEnergy()));
 			playerList.get(i).start();
 			playerList.get(i).join();
+		}
+
+		for (int i = 0; i < 90 ; i++){
+			game.addPlayerToGame((Player) playerList.get(i));
 		}
 	}
 
