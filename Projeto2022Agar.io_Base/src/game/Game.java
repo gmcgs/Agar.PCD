@@ -13,10 +13,10 @@ public class Game extends Observable {
 	private static final int NUM_PLAYERS = 90;
 	private static final int NUM_FINISHED_PLAYERS_TO_END_GAME=3;
 
-	public static final long REFRESH_INTERVAL = 400;
+	public static final long REFRESH_INTERVAL = 100;
 	public static final double MAX_INITIAL_STRENGTH = 3;
 	public static final long MAX_WAITING_TIME_FOR_MOVE = 2000;
-	public static final long INITIAL_WAITING_TIME = 10000;
+	public static final long INITIAL_WAITING_TIME = 1000;
 
 	protected Cell[][] board;
 
@@ -63,16 +63,50 @@ public class Game extends Observable {
 	}
 
 	public void playerMove(Cell pos, Cell newPos){
+		//getCellsLock(pos, newPos);
+		pos.getLock();
+		newPos.getLock();
 		try{
 			if(!newPos.isOccupied()) {
 				newPos.setPlayer(pos.getPlayer());
 				pos.removePlayer();
 			} else {
-				//implementar conflito
+				boolean notObstacle = newPos.getPlayer().getCurrentStrength() != 0 && newPos.getPlayer().getCurrentStrength() != 10;
+				if(notObstacle)
+					resolveConflite(pos.getPlayer(), newPos.getPlayer());
 			}
+			notifyChange();
 		} finally {
+			//freeCellsLock(pos, newPos);
+			pos.getUnlock();
+			newPos.getUnlock();
+			//não percebi a diferença desta merda
 		}
 	}
+
+
+	private void resolveConflite(Player fighter, Player defender) {
+		byte defenderValue = defender.getCurrentStrength();
+		byte fighterValue = fighter.getCurrentStrength();
+		boolean tieBreak = (Math.random() < 0.5);
+
+		if(defenderValue > fighterValue){
+			defender.setCurrentStrength(defenderValue + fighterValue);
+			fighter.setCurrentStrength(0);
+		} else if (defenderValue < fighterValue) {
+			fighter.setCurrentStrength(defenderValue + fighterValue);
+			defender.setCurrentStrength(0);
+		} else {
+			if (tieBreak){
+				defender.setCurrentStrength(defenderValue + fighterValue);
+				fighter.setCurrentStrength(0);
+			}else{
+				fighter.setCurrentStrength(defenderValue + fighterValue);
+				defender.setCurrentStrength(0);
+			}
+		}
+	}
+
 
 	public Cell validate(Coordinate p){
 		if(validatePos(p))
@@ -82,6 +116,30 @@ public class Game extends Observable {
 
 	private boolean validatePos(Coordinate pos){
 		return pos.x >= 0 && pos.x < DIMX && pos.y >= 0 && pos.y < DIMY;
+	}
+
+
+	//por explicar a utilidade
+	private void getCellsLock(Cell actualPosition, Cell newPosition) {
+		boolean lineFight = actualPosition.getPosition().x != newPosition.getPosition().x;
+		if (lineFight && actualPosition.getPosition().y < newPosition.getPosition().y || actualPosition.getPosition().x < newPosition.getPosition().x) {
+			actualPosition.getLock();
+			newPosition.getLock();
+		} else {
+			newPosition.getLock();
+			actualPosition.getLock();
+		}
+	}
+
+	private void freeCellsLock(Cell actualPosition, Cell newPosition) {
+		boolean lineFight = actualPosition.getPosition().x != newPosition.getPosition().x;
+		if (lineFight && actualPosition.getPosition().y < newPosition.getPosition().y || actualPosition.getPosition().x < newPosition.getPosition().x) {
+			actualPosition.getUnlock();
+			newPosition.getUnlock();
+		} else {
+			newPosition.getUnlock();
+			actualPosition.getUnlock();
+		}
 	}
 
 }

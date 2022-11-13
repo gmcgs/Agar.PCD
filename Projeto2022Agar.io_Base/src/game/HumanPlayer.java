@@ -1,6 +1,7 @@
 package game;
 
 import environment.Direction;
+import gui.BoardJComponent;
 
 /**
  * Class to demonstrate a player being added to the game.
@@ -8,8 +9,8 @@ import environment.Direction;
  *
  */
 public class HumanPlayer extends Player {
-	public HumanPlayer(int id, Game game, byte strength) {
-		super(id, game, strength);
+	public HumanPlayer(int id, Game game, byte strength, BoardJComponent theBoard) {
+		super(id, game, strength, theBoard);
 	}
 
 	public boolean isHumanPlayer() {
@@ -18,6 +19,7 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public Direction nextDirection() {
-		return null;
-	}
+		Direction nextDirection = theBoard.getLastPressedDirection();
+		theBoard.clearLastPressedDirection();
+		return nextDirection;	}
 }

@@ -5,6 +5,7 @@ package game;
 import environment.Cell;
 import environment.Coordinate;
 import environment.Direction;
+import gui.BoardJComponent;
 
 import javax.swing.*;
 
@@ -13,54 +14,66 @@ import javax.swing.*;
  * @author luismota
  *
  */
-public abstract class Player extends Thread{
+public abstract class Player extends Thread {
 
 
-	protected  Game game;
+	protected Game game;
 
 	private int id;
 
 	private byte currentStrength;
 	protected byte originalStrength;
 
+	protected BoardJComponent theBoard;
+
 	public Cell getCurrentCell() {
 		//done
 		return game.getPlayerCell(this);
 	}
 
-	public Player(int id, Game game, byte strength) {
+	public Player(int id, Game game, byte strength, BoardJComponent theBoard) {
 		super();
 		this.id = id;
-		this.game=game;
-		currentStrength=strength;
-		originalStrength=strength;
+		this.game = game;
+		currentStrength = strength;
+		originalStrength = strength;
+		this.theBoard = theBoard;
 	}
+
 	@Override
 	public void run() {
 		boolean notOnTheGame = true;
 
 		while (notOnTheGame) {
-			try{
+			try {
 				game.addPlayerToGame(this);
 				notOnTheGame = false;
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
-			try{
-				moviment(nextDirection());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
+		try {
+			sleep(game.INITIAL_WAITING_TIME);
+			while (this.currentStrength != 10 && this.currentStrength != 0) {
+				movement(nextDirection());
+				sleep(game.REFRESH_INTERVAL * originalStrength);
 			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	public void moviment(Direction direction){
-		System.out.println("moviment");
-		if (direction != null){
+	public abstract Direction nextDirection();
+
+	public void movement(Direction direction) {
+		//if redundante
+		//if (this.currentStrength == 0 || this.currentStrength == 10) return;
+		System.out.println("movement");
+		if (direction != null) {
 			Cell position = game.getPlayerCell(this);
 			Coordinate newPosition = position.getPosition().translate(direction.getVector());
 			Cell newPos = game.validate(newPosition);
-			if (newPos != null){
+			if (newPos != null) {
 				game.playerMove(position, newPos);
 			}
 		}
@@ -68,11 +81,10 @@ public abstract class Player extends Thread{
 
 	public abstract boolean isHumanPlayer();
 
-	public abstract Direction nextDirection();
 	@Override
 	public String toString() {
 		return "Player [id=" + id + ", currentStrength=" + currentStrength + ", getCurrentCell()=" + getCurrentCell()
-		+ "]";
+				+ "]";
 	}
 
 	@Override
@@ -98,6 +110,12 @@ public abstract class Player extends Thread{
 
 	public byte getCurrentStrength() {
 		return currentStrength;
+	}
+
+	public byte setCurrentStrength(int a) {
+		if (a > 10)
+			return this.currentStrength = 10;
+		else return this.currentStrength = (byte) a;
 	}
 
 
