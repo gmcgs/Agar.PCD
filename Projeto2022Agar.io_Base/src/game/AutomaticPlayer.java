@@ -18,8 +18,5 @@ public class AutomaticPlayer extends Player {
         return Direction.randomDirection();
     }
 
-    @Override
-    public String toString() {
-        return "bot";
-    }
+
 }
