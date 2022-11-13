@@ -62,7 +62,6 @@ public class Cell {
 	public void getLock(){
 		lock.lock();
 	}
-
 	public void getUnlock(){
 		lock.unlock();
 	}

@@ -7,8 +7,6 @@ import environment.Coordinate;
 import environment.Direction;
 import gui.BoardJComponent;
 
-import javax.swing.*;
-
 /**
  * Represents a player.
  * @author luismota
@@ -23,31 +21,29 @@ public abstract class Player extends Thread {
 
 	private byte currentStrength;
 	protected byte originalStrength;
-
-	protected BoardJComponent theBoard;
+	protected BoardJComponent board;
 
 	public Cell getCurrentCell() {
-		//done
 		return game.getPlayerCell(this);
 	}
 
-	public Player(int id, Game game, byte strength, BoardJComponent theBoard) {
+	public Player(int id, Game game, byte strength, BoardJComponent board) {
 		super();
 		this.id = id;
 		this.game = game;
 		currentStrength = strength;
 		originalStrength = strength;
-		this.theBoard = theBoard;
+		this.board = board;
 	}
 
 	@Override
 	public void run() {
-		boolean notOnTheGame = true;
+		boolean onGame = false;
 
-		while (notOnTheGame) {
+		while (!onGame) {
 			try {
 				game.addPlayerToGame(this);
-				notOnTheGame = false;
+				onGame = true;
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -66,16 +62,20 @@ public abstract class Player extends Thread {
 	public abstract Direction nextDirection();
 
 	public void movement(Direction direction) {
-		//if redundante
-		//if (this.currentStrength == 0 || this.currentStrength == 10) return;
-		System.out.println("movement");
-		if (direction != null) {
-			Cell position = game.getPlayerCell(this);
-			Coordinate newPosition = position.getPosition().translate(direction.getVector());
-			Cell newPos = game.validate(newPosition);
-			if (newPos != null) {
-				game.playerMove(position, newPos);
-			}
+		switch (this.currentStrength){
+			case 0:
+			case 10:
+				break;
+			default:
+				System.out.println("movement");
+				if (direction != null) {
+					Cell position = game.getPlayerCell(this);
+					Coordinate newPosition = position.getPosition().translate(direction.getVector());
+					Cell newPos = game.validate(newPosition);
+					if (newPos != null) {
+						game.playerMove(position, newPos);
+					}
+				}break;
 		}
 	}
 
@@ -112,12 +112,13 @@ public abstract class Player extends Thread {
 		return currentStrength;
 	}
 
-	public byte setCurrentStrength(int a) {
-		if (a > 10)
-			return this.currentStrength = 10;
-		else return this.currentStrength = (byte) a;
+	public void setCurrentStrength(int a) {
+		if (a > 10) {
+			this.currentStrength = 10;
+		} else {
+			this.currentStrength = (byte) a;
+		}
 	}
-
 
 	public int getIdentification() {
 		return id;

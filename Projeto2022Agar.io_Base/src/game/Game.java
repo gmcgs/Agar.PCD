@@ -7,13 +7,12 @@ import environment.Coordinate;
 import environment.Direction;
 
 public class Game extends Observable {
-	//temos de fazer a colocação dos jogadores
 	public static final int DIMY = 30;
 	public static final int DIMX = 30;
 	private static final int NUM_PLAYERS = 90;
 	private static final int NUM_FINISHED_PLAYERS_TO_END_GAME=3;
 
-	public static final long REFRESH_INTERVAL = 100;
+	public static final long REFRESH_INTERVAL = 400;
 	public static final double MAX_INITIAL_STRENGTH = 3;
 	public static final long MAX_WAITING_TIME_FOR_MOVE = 2000;
 	public static final long INITIAL_WAITING_TIME = 1000;
@@ -34,7 +33,6 @@ public class Game extends Observable {
 	public void addPlayerToGame(Player player) {
 		Cell initialPos=getRandomCell();
 		initialPos.addPlayer(player);
-		// To update GUI
 		notifyChange();
 	}
 
@@ -71,8 +69,7 @@ public class Game extends Observable {
 				newPos.setPlayer(pos.getPlayer());
 				pos.removePlayer();
 			} else {
-				boolean notObstacle = newPos.getPlayer().getCurrentStrength() != 0 && newPos.getPlayer().getCurrentStrength() != 10;
-				if(notObstacle)
+				if(newPos.getPlayer().getCurrentStrength() != 0 && newPos.getPlayer().getCurrentStrength() != 10)
 					resolveConflite(pos.getPlayer(), newPos.getPlayer());
 			}
 			notifyChange();
@@ -81,6 +78,7 @@ public class Game extends Observable {
 			pos.getUnlock();
 			newPos.getUnlock();
 			//não percebi a diferença desta merda
+			//pois, nem eu. acho que assumimos como está por agora
 		}
 	}
 
@@ -106,7 +104,6 @@ public class Game extends Observable {
 			}
 		}
 	}
-
 
 	public Cell validate(Coordinate p){
 		if(validatePos(p))

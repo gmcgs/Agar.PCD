@@ -38,11 +38,8 @@ public class GameGuiMain implements Observer {
 		frame.setVisible(true);
 		ArrayList<Thread> playerList = new ArrayList<>();
 
-		// humans
-		for (int i = 0; i < 90; i++) {
-			if (i == 0) {
-				playerList.add(new HumanPlayer(i, game, getInitialEnergy(), boardGui));
-			}
+		playerList.add(new HumanPlayer(0, game, getInitialEnergy(), boardGui));
+		for (int i = 1; i < 90; i++) {
 			playerList.add(new AutomaticPlayer(i, game, getInitialEnergy(), boardGui));
 		}
 

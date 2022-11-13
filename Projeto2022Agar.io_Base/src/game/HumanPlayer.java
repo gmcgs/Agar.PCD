@@ -9,8 +9,8 @@ import gui.BoardJComponent;
  *
  */
 public class HumanPlayer extends Player {
-	public HumanPlayer(int id, Game game, byte strength, BoardJComponent theBoard) {
-		super(id, game, strength, theBoard);
+	public HumanPlayer(int id, Game game, byte strength, BoardJComponent board) {
+		super(id, game, strength, board);
 	}
 
 	public boolean isHumanPlayer() {
@@ -19,7 +19,7 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public Direction nextDirection() {
-		Direction nextDirection = theBoard.getLastPressedDirection();
-		theBoard.clearLastPressedDirection();
+		Direction nextDirection = board.getLastPressedDirection();
+		board.clearLastPressedDirection();
 		return nextDirection;	}
 }
