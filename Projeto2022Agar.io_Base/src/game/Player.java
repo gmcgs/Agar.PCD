@@ -35,7 +35,7 @@ public abstract class Player extends Thread {
 		originalStrength = strength;
 		this.board = board;
 	}
-
+	/*
 	@Override
 	public void run() {
 		boolean onGame = false;
@@ -50,7 +50,7 @@ public abstract class Player extends Thread {
 		}
 		try {
 			sleep(game.INITIAL_WAITING_TIME);
-			while (this.currentStrength != 10 && this.currentStrength != 0) {
+			while (this.getCurrentStrength() != 10 && this.getCurrentStrength() != 0) {
 				movement(nextDirection());
 				sleep(game.REFRESH_INTERVAL * originalStrength);
 			}
@@ -58,11 +58,8 @@ public abstract class Player extends Thread {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public abstract Direction nextDirection();
-
 	public void movement(Direction direction) {
-		switch (this.currentStrength){
+		switch (this.getCurrentStrength()){
 			case 0:
 			case 10:
 				break;
@@ -77,7 +74,9 @@ public abstract class Player extends Thread {
 					}
 				}break;
 		}
-	}
+	}*/
+
+	public abstract Direction nextDirection();
 
 	public abstract boolean isHumanPlayer();
 

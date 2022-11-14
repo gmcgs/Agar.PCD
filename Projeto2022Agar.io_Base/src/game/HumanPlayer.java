@@ -1,5 +1,7 @@
 package game;
 
+import environment.Cell;
+import environment.Coordinate;
 import environment.Direction;
 import gui.BoardJComponent;
 

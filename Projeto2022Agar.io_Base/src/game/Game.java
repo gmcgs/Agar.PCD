@@ -12,7 +12,7 @@ public class Game extends Observable {
 	private static final int NUM_PLAYERS = 90;
 	private static final int NUM_FINISHED_PLAYERS_TO_END_GAME=3;
 
-	public static final long REFRESH_INTERVAL = 400;
+	public static final long REFRESH_INTERVAL = 200;
 	public static final double MAX_INITIAL_STRENGTH = 3;
 	public static final long MAX_WAITING_TIME_FOR_MOVE = 2000;
 	public static final long INITIAL_WAITING_TIME = 1000;
