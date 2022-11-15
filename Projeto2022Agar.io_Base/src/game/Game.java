@@ -59,26 +59,10 @@ public class Game extends Observable {
 		return null;
 	}
 //mover para class cell
-	public void playerMove(Cell pos, Cell newPos){
-		pos.getLock();
-		newPos.getLock();
-		try{
-			if(!newPos.isOccupied()) {
-				newPos.setPlayer(pos.getPlayer());
-				pos.removePlayer();
-			} else {
-				if(newPos.getPlayer().getCurrentStrength() != 0 && newPos.getPlayer().getCurrentStrength() != 10)
-					solveConflict(pos.getPlayer(), newPos.getPlayer());
-			}
-			notifyChange();
-		} finally {
-			pos.getUnlock();
-			newPos.getUnlock();
-		}
-	}
 
 
-	private void solveConflict(Player fighter, Player defender) {
+
+	public void solveConflict(Player fighter, Player defender) {
 		byte defenderValue = defender.getCurrentStrength();
 		byte fighterValue = fighter.getCurrentStrength();
 		double draw = Math.random();
