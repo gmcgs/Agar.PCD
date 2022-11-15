@@ -60,7 +60,6 @@ public class Game extends Observable {
 	}
 
 	public void playerMove(Cell pos, Cell newPos){
-		//getCellsLock(pos, newPos);
 		pos.getLock();
 		newPos.getLock();
 		try{
@@ -73,11 +72,8 @@ public class Game extends Observable {
 			}
 			notifyChange();
 		} finally {
-			//freeCellsLock(pos, newPos);
 			pos.getUnlock();
 			newPos.getUnlock();
-			//não percebi a diferença desta merda
-			//pois, nem eu. acho que assumimos como está por agora
 		}
 	}
 
@@ -112,30 +108,6 @@ public class Game extends Observable {
 
 	private boolean validatePos(Coordinate pos){
 		return pos.x >= 0 && pos.x < DIMX && pos.y >= 0 && pos.y < DIMY;
-	}
-
-
-	//por explicar a utilidade
-	private void getCellsLock(Cell actualPosition, Cell newPosition) {
-		boolean lineFight = actualPosition.getPosition().x != newPosition.getPosition().x;
-		if (lineFight && actualPosition.getPosition().y < newPosition.getPosition().y || actualPosition.getPosition().x < newPosition.getPosition().x) {
-			actualPosition.getLock();
-			newPosition.getLock();
-		} else {
-			newPosition.getLock();
-			actualPosition.getLock();
-		}
-	}
-
-	private void freeCellsLock(Cell actualPosition, Cell newPosition) {
-		boolean lineFight = actualPosition.getPosition().x != newPosition.getPosition().x;
-		if (lineFight && actualPosition.getPosition().y < newPosition.getPosition().y || actualPosition.getPosition().x < newPosition.getPosition().x) {
-			actualPosition.getUnlock();
-			newPosition.getUnlock();
-		} else {
-			newPosition.getUnlock();
-			actualPosition.getUnlock();
-		}
 	}
 
 }
