@@ -1,7 +1,6 @@
 package game;
 
 
-
 import environment.Cell;
 import environment.Coordinate;
 import environment.Direction;
@@ -35,7 +34,7 @@ public abstract class Player extends Thread {
 		originalStrength = strength;
 		this.board = board;
 	}
-	/*
+
 	@Override
 	public void run() {
 		boolean onGame = false;
@@ -64,7 +63,6 @@ public abstract class Player extends Thread {
 			case 10:
 				break;
 			default:
-				System.out.println("movement");
 				if (direction != null) {
 					Cell position = game.getPlayerCell(this);
 					Coordinate newPosition = position.getPosition().translate(direction.getVector());
@@ -74,7 +72,7 @@ public abstract class Player extends Thread {
 					}
 				}break;
 		}
-	}*/
+	}
 
 	public abstract Direction nextDirection();
 

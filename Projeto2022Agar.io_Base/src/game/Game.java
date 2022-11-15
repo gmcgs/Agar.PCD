@@ -4,7 +4,6 @@ package game;
 import java.util.Observable;
 import environment.Cell;
 import environment.Coordinate;
-import environment.Direction;
 
 public class Game extends Observable {
 	public static final int DIMY = 30;
@@ -70,7 +69,7 @@ public class Game extends Observable {
 				pos.removePlayer();
 			} else {
 				if(newPos.getPlayer().getCurrentStrength() != 0 && newPos.getPlayer().getCurrentStrength() != 10)
-					resolveConflite(pos.getPlayer(), newPos.getPlayer());
+					solveConflict(pos.getPlayer(), newPos.getPlayer());
 			}
 			notifyChange();
 		} finally {
@@ -83,10 +82,10 @@ public class Game extends Observable {
 	}
 
 
-	private void resolveConflite(Player fighter, Player defender) {
+	private void solveConflict(Player fighter, Player defender) {
 		byte defenderValue = defender.getCurrentStrength();
 		byte fighterValue = fighter.getCurrentStrength();
-		boolean tieBreak = (Math.random() < 0.5);
+		double draw = Math.random();
 
 		if(defenderValue > fighterValue){
 			defender.setCurrentStrength(defenderValue + fighterValue);
@@ -95,7 +94,7 @@ public class Game extends Observable {
 			fighter.setCurrentStrength(defenderValue + fighterValue);
 			defender.setCurrentStrength(0);
 		} else {
-			if (tieBreak){
+			if (draw > 0.5){
 				defender.setCurrentStrength(defenderValue + fighterValue);
 				fighter.setCurrentStrength(0);
 			}else{

@@ -33,7 +33,7 @@ public class AutomaticPlayer extends Player {
             throw new RuntimeException(e);
         }
     }
-    public void movement(Direction direction) {
+    /*public void movement(Direction direction) {
         switch (this.getCurrentStrength()){
             case 0:
             case 10:
@@ -49,7 +49,7 @@ public class AutomaticPlayer extends Player {
                     }
                 }break;
         }
-    }
+    }*/
     @Override
     public Direction nextDirection() {
         return Direction.randomDirection();
