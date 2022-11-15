@@ -34,7 +34,7 @@ public class Cell {
 		try{
 			while (isOccupied()){
 				System.out.println(player + " is waiting for " + this.player + " to move!");
-				free.await();
+				free.await(); //signalAll
 			}
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
