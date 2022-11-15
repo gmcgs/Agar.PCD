@@ -58,12 +58,12 @@ public class BoardJComponent extends JComponent implements KeyListener {
 				if(player!=null) {
 					// Fill yellow if there is a dead player
 					if(player.getCurrentStrength()==0) {
-						//g.setColor(Color.YELLOW);
+						g.setColor(Color.YELLOW);
 						g.fillRect((int)(p.x* cellWidth), 
 								(int)(p.y * cellHeight),
 								(int)(cellWidth),(int)(cellHeight));
-						//g.drawImage(obstacleImage, (int)(p.x * cellWidth), (int)(p.y*cellHeight),
-								//(int)(cellWidth),(int)(cellHeight), null);
+						g.drawImage(obstacleImage, (int)(p.x * cellWidth), (int)(p.y*cellHeight),
+								(int)(cellWidth),(int)(cellHeight), null);
 						// if player is dead, don'd draw anything else?
 						continue;
 					}
