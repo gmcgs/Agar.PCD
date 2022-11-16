@@ -48,10 +48,10 @@ public abstract class Player extends Thread {
 			}
 		}
 		try {
-			sleep(game.INITIAL_WAITING_TIME);
+			sleep(Game.INITIAL_WAITING_TIME);
 			while (this.getCurrentStrength() != 10 && this.getCurrentStrength() != 0) {
 				movement(nextDirection());
-				sleep(game.REFRESH_INTERVAL * originalStrength);
+				sleep(Game.REFRESH_INTERVAL * originalStrength);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
