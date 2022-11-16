@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Cell {
 	private Coordinate position;
-	private static Game game;
+	private Game game;
 	private Player player=null;
 
 	protected Lock lock = new ReentrantLock();
@@ -44,7 +44,7 @@ public class Cell {
 		}
 	}
 
-	public static void playerMove(Cell pos, Cell newPos){
+	public void playerMove(Cell pos, Cell newPos){
 		pos.lock.lock();
 		newPos.lock.lock();
 		try{
@@ -57,15 +57,10 @@ public class Cell {
 			}
 			game.notifyChange();
 		} finally {
-			pos.getUnlock();
-			newPos.getUnlock();
+			pos.lock.unlock();
+			newPos.lock.unlock();
 		}
 	}
-
-
-
-
-
 
 	public Player getPlayer() {
 		return player;
@@ -79,13 +74,7 @@ public class Cell {
 	public void removePlayer() {
 		lock.lock();
 		this.player = null;
-		lock.unlock();
-	}
-
-	public void getLock(){
-		lock.lock();
-	}
-	public void getUnlock(){
+		free.signalAll();
 		lock.unlock();
 	}
 }

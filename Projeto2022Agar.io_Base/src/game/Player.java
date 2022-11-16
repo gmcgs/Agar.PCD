@@ -68,7 +68,7 @@ public abstract class Player extends Thread {
 					Coordinate newPosition = position.getPosition().translate(direction.getVector());
 					Cell newPos = game.validate(newPosition);
 					if (newPos != null) {
-						Cell.playerMove(position, newPos);
+						position.playerMove(position, newPos);
 					}
 				}break;
 		}

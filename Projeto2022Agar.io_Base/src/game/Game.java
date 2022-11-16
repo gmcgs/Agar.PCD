@@ -1,9 +1,11 @@
 package game;
 
 
+import java.util.ArrayList;
 import java.util.Observable;
 import environment.Cell;
 import environment.Coordinate;
+import gui.GameGuiMain;
 
 public class Game extends Observable {
 	public static final int DIMY = 30;
@@ -11,7 +13,7 @@ public class Game extends Observable {
 	private static final int NUM_PLAYERS = 90;
 	private static final int NUM_FINISHED_PLAYERS_TO_END_GAME=3;
 
-	public static final long REFRESH_INTERVAL = 400;
+	public static final long REFRESH_INTERVAL = 300;
 	public static final double MAX_INITIAL_STRENGTH = 3;
 	public static final long MAX_WAITING_TIME_FOR_MOVE = 2000;
 	public static final long INITIAL_WAITING_TIME = 1000;
@@ -25,7 +27,28 @@ public class Game extends Observable {
 			for (int y = 0; y < Game.DIMY; y++) 
 				board[x][y] = new Cell(new Coordinate(x, y),this);
 	}
-	
+
+	public void startPlayers() throws InterruptedException {
+		ArrayList<Thread> playerList = new ArrayList<>();
+
+		playerList.add(new HumanPlayer(0, GameGuiMain.getGame(), getInitialEnergy(), GameGuiMain.getBoardGui()));
+		for (int i = 1; i < NUM_PLAYERS; i++) {
+			playerList.add(new AutomaticPlayer(i, GameGuiMain.getGame(), getInitialEnergy(), GameGuiMain.getBoardGui()));
+		}
+
+		for (Thread player : playerList) {
+			player.start();
+		}
+
+		for (Thread player : playerList) {
+			player.join();
+		}
+	}
+
+	public byte getInitialEnergy(){
+		return (byte)(Math.random() * Game.MAX_INITIAL_STRENGTH + 1);
+	}
+
 	/** 
 	 * @param player 
 	 */
@@ -58,8 +81,6 @@ public class Game extends Observable {
 					return c;
 		return null;
 	}
-//mover para class cell
-
 
 
 	public void solveConflict(Player fighter, Player defender) {
@@ -84,14 +105,9 @@ public class Game extends Observable {
 		}
 	}
 
-	public Cell validate(Coordinate p){
-		if(validatePos(p))
-			return getCell(p);
+	public Cell validate(Coordinate pos){
+		if(pos.x >= 0 && pos.x < DIMX && pos.y >= 0 && pos.y < DIMY)
+			return getCell(pos);
 		return null;
 	}
-
-	private boolean validatePos(Coordinate pos){
-		return pos.x >= 0 && pos.x < DIMX && pos.y >= 0 && pos.y < DIMY;
-	}
-
 }

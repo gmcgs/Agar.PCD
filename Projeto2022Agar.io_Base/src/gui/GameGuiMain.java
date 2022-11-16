@@ -14,8 +14,8 @@ import javax.swing.JFrame;
 
 public class GameGuiMain implements Observer {
 	private JFrame frame = new JFrame("pcd.io");
-	private BoardJComponent boardGui;
-	private Game game;
+	private static BoardJComponent boardGui;
+	private static Game game;
 
 	public GameGuiMain() {
 		super();
@@ -24,6 +24,14 @@ public class GameGuiMain implements Observer {
 
 		buildGui();
 
+	}
+
+	public static BoardJComponent getBoardGui(){
+		return boardGui;
+	}
+
+	public static Game getGame(){
+		return game;
 	}
 
 	private void buildGui() {
@@ -36,24 +44,7 @@ public class GameGuiMain implements Observer {
 
 	public void init() throws InterruptedException {
 		frame.setVisible(true);
-		ArrayList<Thread> playerList = new ArrayList<>();
-
-		playerList.add(new HumanPlayer(0, game, getInitialEnergy(), boardGui));
-		for (int i = 1; i < 90; i++) {
-			playerList.add(new AutomaticPlayer(i, game, getInitialEnergy(), boardGui));
-		}
-
-		for (Thread player : playerList) {
-			player.start();
-		}
-
-		for (Thread player : playerList) {
-			player.join();
-		}
-	}
-
-	public byte getInitialEnergy(){
-		return (byte)(Math.random() * Game.MAX_INITIAL_STRENGTH + 1);
+		game.startPlayers();
 	}
 
 	@Override
