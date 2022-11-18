@@ -47,6 +47,7 @@ public abstract class Player extends Thread {
 				throw new RuntimeException(e);
 			}
 		}
+
 		try {
 			sleep(Game.INITIAL_WAITING_TIME);
 			while (this.getCurrentStrength() != 10 && this.getCurrentStrength() != 0) {

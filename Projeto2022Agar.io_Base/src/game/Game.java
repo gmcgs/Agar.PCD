@@ -20,12 +20,16 @@ public class Game extends Observable {
 
 	protected Cell[][] board;
 
+	private ArrayList<Thread> winners;
+
 	public Game() {
 		board = new Cell[Game.DIMX][Game.DIMY];
 	
 		for (int x = 0; x < Game.DIMX; x++) 
 			for (int y = 0; y < Game.DIMY; y++) 
 				board[x][y] = new Cell(new Coordinate(x, y),this);
+
+		winners = new ArrayList<>();
 	}
 
 	public void startPlayers() throws InterruptedException {
@@ -103,11 +107,20 @@ public class Game extends Observable {
 				defender.setCurrentStrength(0);
 			}
 		}
+		if(defenderValue == 10){
+			winners.add(defender);
+		} else if (fighterValue == 10){
+			winners.add(fighter);
+		}
 	}
 
 	public Cell validate(Coordinate pos){
 		if(pos.x >= 0 && pos.x < DIMX && pos.y >= 0 && pos.y < DIMY)
 			return getCell(pos);
 		return null;
+	}
+
+	public ArrayList<Thread> getWinners(){
+		return winners;
 	}
 }
