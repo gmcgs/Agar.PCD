@@ -32,6 +32,7 @@ public class Game extends Observable {
 		winners = new ArrayList<>();
 	}
 
+	//está aqui
 	public void startPlayers() throws InterruptedException {
 		ArrayList<Thread> playerList = new ArrayList<>();
 
