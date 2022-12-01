@@ -13,7 +13,7 @@ import game.Player;
 import javax.swing.JFrame;
 
 public class GameGuiMain implements Observer {
-	private JFrame frame = new JFrame("pcd.io");
+	private static JFrame frame = new JFrame("pcd.io");
 	private static BoardJComponent boardGui;
 	private static Game game;
 
@@ -47,10 +47,17 @@ public class GameGuiMain implements Observer {
 		game.startPlayers();
 	}
 
+	public static void notVisib() {
+		frame.setVisible(false);
+		frame.dispose();
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		boardGui.repaint();
 	}
+
+
 
 	public static void main(String[] args) throws InterruptedException {
 		GameGuiMain game = new GameGuiMain();

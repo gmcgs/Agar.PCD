@@ -7,6 +7,8 @@ import environment.Cell;
 import environment.Coordinate;
 import gui.GameGuiMain;
 
+import javax.swing.*;
+
 public class Game extends Observable {
 	public static final int DIMY = 30;
 	public static final int DIMX = 30;
@@ -20,7 +22,9 @@ public class Game extends Observable {
 
 	protected Cell[][] board;
 
-	private ArrayList<Thread> winners;
+	private JFrame win = new JFrame("winners");
+
+	public ArrayList<Thread> winners;
 
 	public Game() {
 		board = new Cell[Game.DIMX][Game.DIMY];
@@ -32,7 +36,6 @@ public class Game extends Observable {
 		winners = new ArrayList<>();
 	}
 
-	//está aqui
 	public void startPlayers() throws InterruptedException {
 		ArrayList<Thread> playerList = new ArrayList<>();
 
@@ -108,10 +111,18 @@ public class Game extends Observable {
 				defender.setCurrentStrength(0);
 			}
 		}
-		if(defenderValue == 10){
+		if(defender.getCurrentStrength() == 10){
+			System.out.println("defender");
 			winners.add(defender);
-		} else if (fighterValue == 10){
+		} else if (fighter.getCurrentStrength() == 10){
+			System.out.println("fighter");
 			winners.add(fighter);
+		}
+		if(winners.stream().toArray().length == 3){
+			System.out.println("Acabou");
+			GameGuiMain.notVisib();
+			pop_up_win();
+
 		}
 	}
 
@@ -124,4 +135,15 @@ public class Game extends Observable {
 	public ArrayList<Thread> getWinners(){
 		return winners;
 	}
+
+	private void pop_up_win(){
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i<3; i++){
+			sb.append( winners.stream().toArray()[i] + "\n");
+		}
+		JOptionPane.showMessageDialog(null, sb.toString());
+
+	}
 }
+
+
