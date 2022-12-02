@@ -5,6 +5,7 @@ import environment.Cell;
 import environment.Coordinate;
 import environment.Direction;
 import gui.BoardJComponent;
+import gui.GameGuiMain;
 
 /**
  * Represents a player.
@@ -50,9 +51,14 @@ public abstract class Player extends Thread {
 
 		try {
 			sleep(Game.INITIAL_WAITING_TIME);
-			while (this.getCurrentStrength() != 10 && this.getCurrentStrength() != 0) {
+			//this.getCurrentStrength() != 10 && this.getCurrentStrength() != 0
+			while (game.barrier.getNumberWaiting() < 3) {
 				movement(nextDirection());
 				sleep(Game.REFRESH_INTERVAL * originalStrength);
+			//depois de atingir as 3 barreiras, o jogo fecha e aparece a lista com o top3
+			}if(game.barrier.getNumberWaiting() >= 3){
+				GameGuiMain.notVisib();
+				game.pop_up_win();
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);

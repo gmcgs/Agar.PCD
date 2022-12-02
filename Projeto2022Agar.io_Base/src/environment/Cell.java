@@ -3,6 +3,7 @@ package environment;
 import game.Game;
 import game.Player;
 
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -48,6 +49,7 @@ public class Cell {
 		pos.lock.lock();
 		newPos.lock.lock();
 		try{
+			game.notifyChange();
 			if(!newPos.isOccupied()) {
 				newPos.setPlayer(pos.getPlayer());
 				pos.removePlayer();
@@ -55,7 +57,10 @@ public class Cell {
 				if(newPos.getPlayer().getCurrentStrength() != 0 && newPos.getPlayer().getCurrentStrength() != 10)
 					game.solveConflict(pos.getPlayer(), newPos.getPlayer());
 			}
-			game.notifyChange();
+		} catch (BrokenBarrierException e) {
+			throw new RuntimeException(e);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
 		} finally {
 			pos.lock.unlock();
 			newPos.lock.unlock();

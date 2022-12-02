@@ -3,6 +3,9 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
 import environment.Cell;
 import environment.Coordinate;
 import gui.GameGuiMain;
@@ -25,6 +28,8 @@ public class Game extends Observable {
 	private JFrame win = new JFrame("winners");
 
 	public ArrayList<Thread> winners;
+
+	public CyclicBarrier barrier = new CyclicBarrier(4);
 
 	public Game() {
 		board = new Cell[Game.DIMX][Game.DIMY];
@@ -91,7 +96,7 @@ public class Game extends Observable {
 	}
 
 
-	public void solveConflict(Player fighter, Player defender) {
+	public void solveConflict(Player fighter, Player defender) throws BrokenBarrierException, InterruptedException {
 		byte defenderValue = defender.getCurrentStrength();
 		byte fighterValue = fighter.getCurrentStrength();
 		double draw = Math.random();
@@ -114,14 +119,12 @@ public class Game extends Observable {
 		if(defender.getCurrentStrength() == 10){
 			System.out.println("defender");
 			winners.add(defender);
+			barrier.await();
+
 		} else if (fighter.getCurrentStrength() == 10){
 			System.out.println("fighter");
 			winners.add(fighter);
-		}
-		if(winners.stream().toArray().length == 3){
-			System.out.println("Acabou");
-			GameGuiMain.notVisib();
-			pop_up_win();
+			barrier.await();
 
 		}
 	}
@@ -132,11 +135,8 @@ public class Game extends Observable {
 		return null;
 	}
 
-	public ArrayList<Thread> getWinners(){
-		return winners;
-	}
-
-	private void pop_up_win(){
+//Auxiliar para o winners window
+	public void pop_up_win(){
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i<3; i++){
 			sb.append( winners.stream().toArray()[i] + "\n");
