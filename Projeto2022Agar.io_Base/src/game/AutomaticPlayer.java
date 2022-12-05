@@ -4,6 +4,7 @@ import environment.Cell;
 import environment.Coordinate;
 import environment.Direction;
 import gui.BoardJComponent;
+import gui.GameGuiMain;
 
 public class AutomaticPlayer extends Player {
 
@@ -25,7 +26,8 @@ public class AutomaticPlayer extends Player {
         }
         try {
             sleep(game.INITIAL_WAITING_TIME);
-            while (this.getCurrentStrength() != 10 && this.getCurrentStrength() != 0) {
+            //this.getCurrentStrength() != 10 && this.getCurrentStrength() != 0
+            while (game.barrier.getNumberWaiting() < 3) {
                 movement(nextDirection());
                 sleep(game.REFRESH_INTERVAL * originalStrength);
             }

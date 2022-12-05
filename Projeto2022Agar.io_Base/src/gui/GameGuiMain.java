@@ -46,6 +46,7 @@ public class GameGuiMain implements Observer {
 		frame.setVisible(true);
 	}
 
+	//fechar o GameGui
 	public static void notVisib() {
 		frame.setVisible(false);
 		frame.dispose();
