@@ -44,7 +44,6 @@ public class GameGuiMain implements Observer {
 
 	public void init() throws InterruptedException {
 		frame.setVisible(true);
-		game.startPlayers();
 	}
 
 	public static void notVisib() {

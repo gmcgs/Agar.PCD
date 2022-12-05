@@ -36,6 +36,7 @@ public class Game extends Observable {
 		winners = new ArrayList<>();
 	}
 
+	/*
 	public void startPlayers() throws InterruptedException {
 		ArrayList<Thread> playerList = new ArrayList<>();
 
@@ -52,6 +53,7 @@ public class Game extends Observable {
 			player.join();
 		}
 	}
+	*/
 
 	public byte getInitialEnergy(){
 		return (byte)(Math.random() * Game.MAX_INITIAL_STRENGTH + 1);
