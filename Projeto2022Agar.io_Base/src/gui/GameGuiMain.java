@@ -26,10 +26,6 @@ public class GameGuiMain implements Observer {
 
 	}
 
-	public static BoardJComponent getBoardGui(){
-		return boardGui;
-	}
-
 	public static Game getGame(){
 		return game;
 	}

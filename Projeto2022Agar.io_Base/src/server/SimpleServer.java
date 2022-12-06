@@ -1,6 +1,7 @@
 package server;
 
 import game.Game;
+import game.RemotePlayer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +18,17 @@ public class SimpleServer extends Thread{
         this.handler = handler;
     }
 
+    public class ClientInteractions extends Thread{
+        private RemotePlayer p;
+        private ObjectOutputStream out;
+        private BufferedReader in;
+
+        public ClientInteractions(Socket soc) throws IOException {
+            in = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+            out = new ObjectOutputStream(soc.getOutputStream());
+
+        }
+    }
     @Override
     public void run(){
         try {
@@ -31,17 +43,10 @@ public class SimpleServer extends Thread{
         try {
             while(true){
                 Socket socket = ss.accept();
-                new ClientDealer(socket).start();
+                new ClientInteractions(socket).start();
             }
         } finally {
             ss.close();
-        }
-    }
-
-    public class ClientDealer extends Thread{
-
-
-        public ClientDealer(Socket socket) {
         }
     }
 }
