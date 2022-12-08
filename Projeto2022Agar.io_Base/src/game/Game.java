@@ -141,7 +141,7 @@ public class Game extends Observable {
 	public void pop_up_win(){
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i<3; i++){
-			sb.append( winners.stream().toArray()[i] + "\n");
+			sb.append(winners.toArray()[i]).append("\n");
 		}
 		JOptionPane.showMessageDialog(null, sb.toString());
 

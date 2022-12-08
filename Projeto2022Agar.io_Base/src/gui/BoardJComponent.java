@@ -31,11 +31,21 @@ public class BoardJComponent extends JComponent implements KeyListener {
 	private Image obstacleImage = new ImageIcon("C:\\Users\\gmigu\\Documents\\3ºano\\PCD\\Projeto2022AgarIo_Base\\Projeto2022Agar.io_Base\\obstacle.png").getImage();
 	private Image humanPlayerImage= new ImageIcon("C:\\Users\\gmigu\\Documents\\3ºano\\PCD\\Projeto2022AgarIo_Base\\Projeto2022Agar.io_Base\\abstract-user-flat.png").getImage();
 	private Direction lastPressedDirection=null;
-	
-	public BoardJComponent(Game game) {
-		this.game = game;
+
+	private static BoardJComponent INSTANCE;
+
+	public BoardJComponent() {
+		this.game = null;
 		setFocusable(true);
 		addKeyListener(this);
+		INSTANCE = this;
+	}
+
+
+	public static BoardJComponent getInstance() {
+		if (INSTANCE != null)
+			return INSTANCE;
+		return new BoardJComponent();
 	}
 
 	@Override
