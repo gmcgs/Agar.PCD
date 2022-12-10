@@ -25,7 +25,7 @@ public class Server implements Observer {
     }
 
     private void createGui() {
-        boardGui = new BoardJComponent();
+        boardGui = new BoardJComponent(game);
         frame.add(boardGui);
         frame.setSize(800, 800);
         frame.setLocation(0, 150);

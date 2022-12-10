@@ -34,19 +34,12 @@ public class BoardJComponent extends JComponent implements KeyListener {
 
 	private static BoardJComponent INSTANCE;
 
-	public BoardJComponent() {
-		this.game = null;
+	public BoardJComponent(Game game) {
+		this.game = game;
 		setFocusable(true);
 		addKeyListener(this);
-		INSTANCE = this;
 	}
 
-
-	public static BoardJComponent getInstance() {
-		if (INSTANCE != null)
-			return INSTANCE;
-		return new BoardJComponent();
-	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
