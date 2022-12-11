@@ -37,13 +37,15 @@ public class GameGuiMain implements Observer {
 		frame.setLocation(0, 150);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
+	public static BoardJComponent getBoardGui(){
+		return boardGui;
+	}
 	public void init() throws InterruptedException {
 		frame.setVisible(true);
-
+		game.startPlayers();
 	}
 
-	//fechar o GameGui
+	//fechar o GameGui (não utilizado)
 	public static void notVisib() {
 		frame.setVisible(false);
 		frame.dispose();
@@ -56,9 +58,5 @@ public class GameGuiMain implements Observer {
 
 
 
-	public static void main(String[] args) throws InterruptedException {
-		GameGuiMain game = new GameGuiMain();
-		game.init();
-	}
 
 }

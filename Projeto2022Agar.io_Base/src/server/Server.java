@@ -5,6 +5,7 @@ import game.AutomaticPlayer;
 import game.Game;
 import game.HumanPlayer;
 import gui.BoardJComponent;
+import gui.GameGuiMain;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -49,4 +50,9 @@ public class Server implements Observer {
             p.start();
         }
     }
+    public static void main(String[] args) throws InterruptedException {
+        GameGuiMain game = new GameGuiMain();
+        game.init();
+    }
+
 }

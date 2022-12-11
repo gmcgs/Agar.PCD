@@ -7,6 +7,10 @@ import environment.Direction;
 import gui.BoardJComponent;
 import gui.GameGuiMain;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Represents a player.
  * @author luismota
@@ -18,6 +22,10 @@ public abstract class Player extends Thread {
 	protected Game game;
 
 	private int id;
+
+	protected Lock cadeado = new ReentrantLock();
+
+	protected Condition waiting = cadeado.newCondition();
 
 	private byte currentStrength;
 	protected byte originalStrength;
@@ -57,14 +65,14 @@ public abstract class Player extends Thread {
 				sleep(Game.REFRESH_INTERVAL * originalStrength);
 			//depois de atingir as 3 barreiras, o jogo fecha e aparece a lista com o top3
 			}if(game.barrier.getNumberWaiting() >= 3){
-				GameGuiMain.notVisib();
+				//GameGuiMain.notVisib();
 				game.pop_up_win();
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-	public void movement(Direction direction) {
+	public void movement(Direction direction) throws InterruptedException {
 		switch (this.getCurrentStrength()){
 			case 0:
 			case 10:
@@ -75,6 +83,7 @@ public abstract class Player extends Thread {
 					Coordinate newPosition = position.getPosition().translate(direction.getVector());
 					Cell newPos = game.validate(newPosition);
 					if (newPos != null) {
+
 						position.playerMove(position, newPos);
 					}
 				}break;

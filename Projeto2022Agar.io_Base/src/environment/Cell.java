@@ -8,14 +8,17 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static java.lang.Thread.sleep;
+
 public class Cell {
 	private Coordinate position;
 	private Game game;
 	private Player player=null;
 
 	protected Lock lock = new ReentrantLock();
+
 	protected Condition free = lock.newCondition();
-	
+
 	public Cell(Coordinate position,Game g) {
 		super();
 		this.position = position;
@@ -48,24 +51,29 @@ public class Cell {
 	public void playerMove(Cell pos, Cell newPos){
 		pos.lock.lock();
 		newPos.lock.lock();
-		try{
-			game.notifyChange();
-			if(!newPos.isOccupied()) {
-				newPos.setPlayer(pos.getPlayer());
-				pos.removePlayer();
-			} else {
-				if(newPos.getPlayer().getCurrentStrength() != 0 && newPos.getPlayer().getCurrentStrength() != 10)
-					game.solveConflict(pos.getPlayer(), newPos.getPlayer());
+		synchronized (free) {
+			try {
+				game.notifyChange();
+				if (!newPos.isOccupied()) {
+					newPos.setPlayer(pos.getPlayer());
+					pos.removePlayer();
+				} else {
+					if (newPos.getPlayer().getCurrentStrength() != 0 && newPos.getPlayer().getCurrentStrength() != 10) {
+						game.solveConflict(pos.getPlayer(), newPos.getPlayer());
+					}
+					if (newPos.getPlayer().getCurrentStrength() == 0 && !player.isHumanPlayer()) {
+						free.wait(2000);
+					}
+				}
+			} catch (BrokenBarrierException | InterruptedException e) {
+				throw new RuntimeException(e);
+			} finally {
+				pos.lock.unlock();
+				newPos.lock.unlock();
 			}
-		} catch (BrokenBarrierException e) {
-			throw new RuntimeException(e);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		} finally {
-			pos.lock.unlock();
-			newPos.lock.unlock();
 		}
 	}
+
 
 	public Player getPlayer() {
 		return player;
