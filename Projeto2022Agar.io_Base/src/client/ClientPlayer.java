@@ -18,11 +18,19 @@ public class ClientPlayer extends Thread {
         this.client = client;
     }
 
+    void connectToTheServer() throws IOException {
+        InetAddress ip = InetAddress.getByName(null);
+        socket = new Socket(ip, SimpleServer.PORT);
+        in = new ObjectInputStream(socket.getInputStream());
+        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+    }
+
     @Override
     public void run() {
         try {
             connectToTheServer();
-            client.update ((Game)in.readObject());
+            //O jogador chega a conectar-se mas não ocorre troca de informação
+            client.update((Game)in.readObject());
             sendMessages();
         } catch (IOException | ClassNotFoundException | InterruptedException exception) {
             System.err.println("error");
@@ -35,16 +43,10 @@ public class ClientPlayer extends Thread {
         }
     }
 
-    void connectToTheServer() throws IOException {
-        InetAddress ip = InetAddress.getByName(null);
-        socket = new Socket(ip, SimpleServer.PORT);
-        in = new ObjectInputStream ( socket.getInputStream ());
-        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-    }
-
     void sendMessages() throws IOException, ClassNotFoundException, InterruptedException {
         boolean isRunning = true;
         while (isRunning) {
+            out.println(client.getLastPressDirection());
             Game game = (Game)in.readUnshared();
             client.update (game);
             sleep(Game.REFRESH_INTERVAL);

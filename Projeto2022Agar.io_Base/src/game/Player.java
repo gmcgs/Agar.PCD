@@ -34,9 +34,10 @@ public abstract class Player extends Thread {
 		return game.getPlayerCell(this);
 	}
 
-	public Player(int id, byte strength) {
+	public Player(int id, Game game, byte strength) {
 		super();
 		this.id = id;
+		this.game = game;
 		currentStrength = strength;
 		originalStrength = strength;
 	}

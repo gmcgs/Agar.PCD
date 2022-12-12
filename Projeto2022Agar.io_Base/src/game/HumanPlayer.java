@@ -26,22 +26,8 @@ public class HumanPlayer extends Player {
 	@Override
 	public Direction nextDirection() {
 		board = BoardJComponent.getInstance(game);
-		String nextDirection = board.getLastPressedDirection();
-		switch (nextDirection) {
-			case "Up":
-				board.clearLastPressedDirection();
-				return UP;
-			case "Down":
-				board.clearLastPressedDirection();
-				return DOWN;
-			case "Left":
-				board.clearLastPressedDirection();
-				return LEFT;
-			case "Right":
-				board.clearLastPressedDirection();
-				return RIGHT;
-			default:
-				throw new IllegalArgumentException("Direção inválida");
-		}
+		Direction nextDirection = board.getLastPressedDirection();
+		board.clearLastPressedDirection();
+		return nextDirection;
 	}
 }

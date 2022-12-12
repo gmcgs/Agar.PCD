@@ -16,7 +16,7 @@ import javax.swing.*;
 public class Game extends Observable {
 	public static final int DIMY = 30;
 	public static final int DIMX = 30;
-	private static final int NUM_PLAYERS = 90;
+	public static final int NUM_PLAYERS = 90;
 	private static final int NUM_FINISHED_PLAYERS_TO_END_GAME=3;
 
 	public static final long REFRESH_INTERVAL = 300;
@@ -30,7 +30,6 @@ public class Game extends Observable {
 
 	public ArrayList<Thread> winners;
 	public ArrayList<Thread> playerList;
-	private static Game INSTANCE;
 
 	public CyclicBarrier barrier = new CyclicBarrier(NUM_FINISHED_PLAYERS_TO_END_GAME+1);
 
@@ -43,13 +42,6 @@ public class Game extends Observable {
 
 		winners = new ArrayList<>();
 		playerList = new ArrayList<>();
-		INSTANCE = this;
-	}
-
-	public void end(){
-		for (Thread thread : playerList) {
-			thread.interrupt();
-		}
 	}
 
 	public byte getInitialEnergy(){
@@ -137,12 +129,6 @@ public class Game extends Observable {
 		}
 		JOptionPane.showMessageDialog(null, sb.toString());
 
-	}
-
-	public static Game getInstance() {
-		if (INSTANCE != null)
-			return INSTANCE;
-		return new Game();
 	}
 }
 

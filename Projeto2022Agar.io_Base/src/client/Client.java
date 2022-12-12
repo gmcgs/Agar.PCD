@@ -18,11 +18,10 @@ public class Client {
     public Client(){
         client = new ClientPlayer(this);
         client.start();
-        buildGui();
+        createGui();
     }
 
-    private void buildGui() {
-
+    private void createGui() {
         boardGui = BoardJComponent.getInstance(new Game());
         frame.add(boardGui);
         frame.setSize(800, 800);
