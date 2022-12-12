@@ -8,6 +8,7 @@ import java.util.concurrent.CyclicBarrier;
 
 import environment.Cell;
 import environment.Coordinate;
+import gui.BoardJComponent;
 import gui.GameGuiMain;
 
 import javax.swing.*;
@@ -23,49 +24,40 @@ public class Game extends Observable {
 	public static final long MAX_WAITING_TIME_FOR_MOVE = 2000;
 	public static final long INITIAL_WAITING_TIME = 1000;
 
-	protected Cell[][] board;
+	protected static Cell[][] board;
 
-	private JFrame win = new JFrame("winners");
+	private final JFrame win = new JFrame("winners");
 
 	public ArrayList<Thread> winners;
+	public ArrayList<Thread> playerList;
+	private static Game INSTANCE;
 
-	public CyclicBarrier barrier = new CyclicBarrier(4);
+	public CyclicBarrier barrier = new CyclicBarrier(NUM_FINISHED_PLAYERS_TO_END_GAME+1);
 
 	public Game() {
 		board = new Cell[Game.DIMX][Game.DIMY];
-	
-		for (int x = 0; x < Game.DIMX; x++) 
-			for (int y = 0; y < Game.DIMY; y++) 
+
+		for (int x = 0; x < Game.DIMX; x++)
+			for (int y = 0; y < Game.DIMY; y++)
 				board[x][y] = new Cell(new Coordinate(x, y),this);
 
 		winners = new ArrayList<>();
+		playerList = new ArrayList<>();
+		INSTANCE = this;
 	}
 
-
-	public void startPlayers() throws InterruptedException {
-		ArrayList<Thread> playerList = new ArrayList<>();
-
-		playerList.add(new HumanPlayer(0, GameGuiMain.getGame(), getInitialEnergy(), GameGuiMain.getBoardGui()));
-		for (int i = 1; i < NUM_PLAYERS; i++) {
-			playerList.add(new AutomaticPlayer(i, GameGuiMain.getGame(), getInitialEnergy(), GameGuiMain.getBoardGui()));
-		}
-
-		for (Thread player : playerList) {
-			player.start();
-		}
-
-		for (Thread player : playerList) {
-			player.join();
+	public void end(){
+		for (Thread thread : playerList) {
+			thread.interrupt();
 		}
 	}
-
 
 	public byte getInitialEnergy(){
 		return (byte)(Math.random() * Game.MAX_INITIAL_STRENGTH + 1);
 	}
 
-	/** 
-	 * @param player 
+	/**
+	 * @param player
 	 */
 	public void addPlayerToGame(Player player) {
 		Cell initialPos=getRandomCell();
@@ -73,11 +65,11 @@ public class Game extends Observable {
 		notifyChange();
 	}
 
-	public Cell getCell(Coordinate at) {
+	public static Cell getCell(Coordinate at) {
 		return board[at.x][at.y];
 	}
 
-	/**	
+	/**
 	 * Updates GUI. Should be called anytime the game state changes
 	 */
 	public void notifyChange() {
@@ -137,7 +129,7 @@ public class Game extends Observable {
 		return null;
 	}
 
-//Auxiliar para o winners window
+	//Auxiliar para o winners window
 	public void pop_up_win(){
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i<3; i++){
@@ -145,6 +137,12 @@ public class Game extends Observable {
 		}
 		JOptionPane.showMessageDialog(null, sb.toString());
 
+	}
+
+	public static Game getInstance() {
+		if (INSTANCE != null)
+			return INSTANCE;
+		return new Game();
 	}
 }
 

@@ -1,41 +1,44 @@
 package game;
 
 import environment.Direction;
-import gui.BoardJComponent;
+
+import static environment.Direction.*;
 
 public class RemotePlayer extends Player{
+    private String lastDirectionRecorded;
 
-    private String lastRecDirection;
-
-    public RemotePlayer(int id, Game game, byte strength, BoardJComponent board) {
-        super(id, game, strength, board);
-        lastRecDirection = null;
+    public RemotePlayer(int id, Game game, byte strength) {
+        super(id, game, strength);
+        lastDirectionRecorded = null;
     }
 
-    public void setlastRecDirection(String dir){
-        if ("UP".equals(dir) || "DOWN".equals(dir) || "LEFT".equals(dir) || "RIGHT".equals(dir))
-            lastRecDirection = dir;
+    public void setLastRecievedDirection(String direction) {
+        if ("Up".equals(direction) || "Down".equals(direction) || "Left".equals(direction) || "Right".equals(direction))
+            lastDirectionRecorded = direction;
     }
+
     @Override
-    public Direction nextDirection() {
-        Direction nextDirection = stringToDirection(lastRecDirection);
-        lastRecDirection = null;
-        return nextDirection;
+    public Direction nextDirection() throws RuntimeException {
+        switch (lastDirectionRecorded){
+            case "Up" :
+                lastDirectionRecorded = null;
+                return UP;
+            case "Down":
+                lastDirectionRecorded = null;
+                return DOWN;
+            case "Left":
+                lastDirectionRecorded = null;
+                return LEFT;
+            case "Right":
+                lastDirectionRecorded = null;
+                return RIGHT;
+            default:
+                throw new IllegalArgumentException("Direção inválida");
+        }
     }
 
     @Override
     public boolean isHumanPlayer() {
         return true;
-    }
-
-    public static Direction stringToDirection(String str) {
-        return switch (str) {
-            case "UP" -> Direction.UP;
-            case "DOWN" -> Direction.DOWN;
-            case "LEFT" -> Direction.LEFT;
-            case "RIGHT" -> Direction.RIGHT;
-            case null -> null;
-            default -> throw new RuntimeException("A string indicada não equivale a nenhuma direção");
-        };
     }
 }

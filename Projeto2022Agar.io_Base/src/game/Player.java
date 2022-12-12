@@ -29,19 +29,16 @@ public abstract class Player extends Thread {
 
 	private byte currentStrength;
 	protected byte originalStrength;
-	protected BoardJComponent board;
 
 	public Cell getCurrentCell() {
 		return game.getPlayerCell(this);
 	}
 
-	public Player(int id, Game game, byte strength, BoardJComponent board) {
+	public Player(int id, byte strength) {
 		super();
 		this.id = id;
-		this.game = game;
 		currentStrength = strength;
 		originalStrength = strength;
-		this.board = board;
 	}
 
 	@Override
@@ -63,13 +60,13 @@ public abstract class Player extends Thread {
 			while (game.barrier.getNumberWaiting() < 3) {
 				movement(nextDirection());
 				sleep(Game.REFRESH_INTERVAL * originalStrength);
-			//depois de atingir as 3 barreiras, o jogo fecha e aparece a lista com o top3
+				//depois de atingir as 3 barreiras, o jogo fecha e aparece a lista com o top3
 			}if(game.barrier.getNumberWaiting() >= 3){
 				//GameGuiMain.notVisib();
 				game.pop_up_win();
 			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		} catch (Exception ignored) {
+
 		}
 	}
 	public void movement(Direction direction) throws InterruptedException {

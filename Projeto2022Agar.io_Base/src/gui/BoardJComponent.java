@@ -26,7 +26,6 @@ import javax.swing.JComponent;
  *
  */
 public class BoardJComponent extends JComponent implements KeyListener {
-	private Game game;
 
 	private Image obstacleImage = new ImageIcon("C:\\Users\\gmigu\\Documents\\3ºano\\PCD\\Projeto2022AgarIo_Base\\Projeto2022Agar.io_Base\\obstacle.png").getImage();
 	private Image humanPlayerImage= new ImageIcon("C:\\Users\\gmigu\\Documents\\3ºano\\PCD\\Projeto2022AgarIo_Base\\Projeto2022Agar.io_Base\\abstract-user-flat.png").getImage();
@@ -34,13 +33,20 @@ public class BoardJComponent extends JComponent implements KeyListener {
 
 	private static BoardJComponent INSTANCE;
 
+	private Game game;
+
 	public BoardJComponent(Game game) {
-		this.game = game;
 		setFocusable(true);
 		addKeyListener(this);
+	 	INSTANCE = this;
+		this.game = game;
 	}
 
-
+	public static BoardJComponent getInstance(Game game) {
+		if (INSTANCE != null)
+			return INSTANCE;
+		return new BoardJComponent(game);
+	}
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -95,21 +101,7 @@ public class BoardJComponent extends JComponent implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch(e.getKeyCode()){
-		case KeyEvent.VK_LEFT :
-			lastPressedDirection=environment.Direction.LEFT;
-			break;
-		case KeyEvent.VK_RIGHT:
-			lastPressedDirection=environment.Direction.RIGHT;
-			break;
-		case KeyEvent.VK_UP:
-			lastPressedDirection=environment.Direction.UP;
-			break;
-		case KeyEvent.VK_DOWN:
-			lastPressedDirection=environment.Direction.DOWN;
-			break;
-		}
-	}
+		lastPressedDirection = KeyEvent.getKeyText(e.getKeyCode());}
 
 
 	@Override
@@ -128,5 +120,13 @@ public class BoardJComponent extends JComponent implements KeyListener {
 
 	public void clearLastPressedDirection() {
 		lastPressedDirection=null;
+	}
+
+	public void setGame(Game game) {
+		if (game != null)
+			this.game = game;
+	}
+	public Game getGame(){
+		return game;
 	}
 }

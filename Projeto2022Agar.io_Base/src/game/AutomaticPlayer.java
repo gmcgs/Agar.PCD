@@ -8,8 +8,8 @@ import gui.GameGuiMain;
 
 public class AutomaticPlayer extends Player {
 
-    public AutomaticPlayer(int id, Game game, byte strength, BoardJComponent board) {
-        super(id, game, strength, board);
+    public AutomaticPlayer(int id, Game game, byte strength) {
+        super(id, game, strength);
     }
     /*public void movement(Direction direction) {
         switch (this.getCurrentStrength()){

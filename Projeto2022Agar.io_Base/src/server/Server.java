@@ -4,6 +4,7 @@ import com.sun.jdi.BooleanType;
 import game.AutomaticPlayer;
 import game.Game;
 import game.HumanPlayer;
+import game.Player;
 import gui.BoardJComponent;
 import gui.GameGuiMain;
 
@@ -12,47 +13,59 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import static java.lang.Thread.sleep;
+
 public class Server implements Observer {
     private JFrame frame = new JFrame("Server.io");
     public BoardJComponent boardGui;
     private Game game;
+
     private ArrayList<Thread> players;
+    private SimpleServer server;
 
     public Server(){
-        players = new ArrayList<Thread>();
-        game = new Game();
-        game.addObserver( this);
         createGui();
+        game = new Game();
+        players = new ArrayList<>();
     }
 
     private void createGui() {
-        boardGui = new BoardJComponent(game);
+        boardGui = BoardJComponent.getInstance(game);
         frame.add(boardGui);
         frame.setSize(800, 800);
         frame.setLocation(0, 150);
+        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    public void init() throws InterruptedException {
+        for (int i = 0; i < 5; i++) {
+            players.add(new AutomaticPlayer(i, game, game.initialEnergy()));
+        }
+
+        for (Thread player : players) {
+            player.start();
+        }
+
+        server = new SimpleServer(this);
+        server.start();
+
+        for (Thread player : players) {
+            player.join();
+        }
+    }
     @Override
     public void update(Observable o, Object arg) {
         boardGui.repaint();
     }
 
-    public void init() throws InterruptedException{
-        frame.setVisible(true);
-        for(int i = 0; i < 1; i++)
-            players.add(new HumanPlayer(i, game, (byte)5, boardGui));
-
-        for (int i = 1; i < 5; i++)
-            players.add(new AutomaticPlayer(i, game, game.getInitialEnergy(), boardGui));
-
-        for (Thread p : players){
-            p.start();
-        }
+    public void addPlayer(Player player){
+        players.add(player);
     }
+
     public static void main(String[] args) throws InterruptedException {
-        GameGuiMain game = new GameGuiMain();
-        game.init();
+        Server server = new Server();
+        server.init();
     }
 
 }

@@ -42,7 +42,7 @@ public class GameGuiMain implements Observer {
 	}
 	public void init() throws InterruptedException {
 		frame.setVisible(true);
-		game.startPlayers();
+		//game.startPlayers();
 	}
 
 	//fechar o GameGui (não utilizado)
